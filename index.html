@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXUS Cybercafé — Gaming, Coworking & Café</title>
+<meta name="description" content="Cybercafé gamer 24/7: PCs de alto rendimiento, consolas, salas VR, impresión, coworking y la mejor cafetería de la ciudad.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+</head>
+<body>
+
+<!-- ======= FONDO ANIMADO ======= -->
+<div class="bg-layer">
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="scanlines"></div>
+</div>
+
+<!-- ======= NAV ======= -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#inicio" class="logo">
+      <span class="logo-mark">N</span>
+      <span class="logo-text">NEXUS<em>cybercafé</em></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#inicio" class="active">Inicio</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#tarifas">Tarifas</a>
+      <a href="#estaciones">Estaciones</a>
+      <a href="#torneos">Torneos</a>
+      <a href="#cafeteria">Cafetería</a>
+      <a href="#contacto">Contacto</a>
+      <a href="#reserva" class="btn btn-sm btn-primary nav-cta">Reservar</a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ======= HERO ======= -->
+<section class="hero" id="inicio">
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <div class="badge reveal">
+        <span class="pulse-dot"></span> Abierto ahora · <span id="liveCount">18</span> equipos libres
+      </div>
+      <h1 class="reveal">
+        Tu próxima <span class="grad">partida</span><br>
+        empieza aquí
+      </h1>
+      <p class="lead reveal">
+        RTX 4080, monitores 240 Hz, fibra de 1 Gb simétrica y café de especialidad
+        servido en la silla. Gaming, coworking y eSports abiertos <strong>24/7</strong>.
+      </p>
+      <div class="hero-actions reveal">
+        <a href="#reserva" class="btn btn-primary btn-lg">Reservar estación</a>
+        <a href="#tarifas" class="btn btn-ghost btn-lg">Ver tarifas</a>
+      </div>
+      <div class="hero-stats reveal">
+        <div class="stat"><b data-count="48">0</b><span>Equipos gamer</span></div>
+        <div class="stat"><b data-count="240">0</b><span>Hz de refresco</span></div>
+        <div class="stat"><b data-count="1" data-suffix=" Gb">0</b><span>Fibra simétrica</span></div>
+        <div class="stat"><b data-count="24" data-suffix="/7">0</b><span>Siempre abierto</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal">
+      <div class="rig-card">
+        <div class="rig-head">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="rig-title">station_07.exe</span>
+        </div>
+        <div class="rig-body">
+          <div class="rig-row"><span>GPU</span><b>RTX 4080 SUPER</b></div>
+          <div class="rig-row"><span>CPU</span><b>Ryzen 7 9800X3D</b></div>
+          <div class="rig-row"><span>RAM</span><b>32 GB DDR5</b></div>
+          <div class="rig-row"><span>Monitor</span><b>27" 240 Hz</b></div>
+          <div class="rig-row"><span>Periféricos</span><b>Razer + HyperX</b></div>
+          <div class="bars">
+            <div class="bar"><span>FPS</span><i style="--w:96%"></i><b>312</b></div>
+            <div class="bar"><span>Ping</span><i style="--w:12%"></i><b>6 ms</b></div>
+            <div class="bar"><span>Carga</span><i style="--w:38%"></i><b>38%</b></div>
+          </div>
+        </div>
+      </div>
+      <div class="float-chip chip-1">⚡ 1 Gb fibra</div>
+      <div class="float-chip chip-2">☕ Café ilimitado</div>
+      <div class="float-chip chip-3">🏆 Torneo viernes</div>
+    </div>
+  </div>
+  <a href="#servicios" class="scroll-hint" aria-label="Bajar">
+    <span></span>
+  </a>
+</section>
+
+<!-- ======= MARQUEE ======= -->
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>VALORANT</span><i>◆</i><span>LEAGUE OF LEGENDS</span><i>◆</i><span>CS2</span><i>◆</i>
+    <span>FORTNITE</span><i>◆</i><span>DOTA 2</span><i>◆</i><span>APEX LEGENDS</span><i>◆</i>
+    <span>ROCKET LEAGUE</span><i>◆</i><span>FIFA 26</span><i>◆</i><span>MINECRAFT</span><i>◆</i>
+    <span>VALORANT</span><i>◆</i><span>LEAGUE OF LEGENDS</span><i>◆</i><span>CS2</span><i>◆</i>
+    <span>FORTNITE</span><i>◆</i><span>DOTA 2</span><i>◆</i><span>APEX LEGENDS</span><i>◆</i>
+    <span>ROCKET LEAGUE</span><i>◆</i><span>FIFA 26</span><i>◆</i><span>MINECRAFT</span><i>◆</i>
+  </div>
+</div>
+
+<!-- ======= SERVICIOS ======= -->
+<section class="section" id="servicios">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Lo que ofrecemos</span>
+      <h2>Mucho más que un <span class="grad">cibercafé</span></h2>
+      <p>Seis zonas pensadas para jugar, trabajar, crear y descansar sin salir del local.</p>
+    </div>
+    <div class="grid services">
+      <article class="card svc reveal">
+        <div class="svc-icon">🎮</div>
+        <h3>Zona Gaming</h3>
+        <p>48 estaciones con RTX 40, monitores de 240 Hz y sillas ergonómicas Secretlab.</p>
+        <ul><li>Steam, Epic y Riot precargados</li><li>Periféricos premium</li><li>Cuentas personales seguras</li></ul>
+      </article>
+      <article class="card svc reveal">
+        <div class="svc-icon">💼</div>
+        <h3>Coworking</h3>
+        <p>Cabinas silenciosas con doble monitor, luz cálida y enchufes por asiento.</p>
+        <ul><li>Salas de reunión por hora</li><li>Impresión y escaneo</li><li>Casilleros con llave</li></ul>
+      </article>
+      <article class="card svc reveal">
+        <div class="svc-icon">🕶️</div>
+        <h3>Sala VR</h3>
+        <p>Dos arenas de realidad virtual con Meta Quest 3 y tracking de cuerpo completo.</p>
+        <ul><li>Sesiones de 30 o 60 min</li><li>Multijugador hasta 4</li><li>Guía incluida</li></ul>
+      </article>
+      <article class="card svc reveal">
+        <div class="svc-icon">🖨️</div>
+        <h3>Servicios digitales</h3>
+        <p>Impresión, anillado, trámites en línea, escaneo y fotos para documentos.</p>
+        <ul><li>Color y B/N</li><li>Formato hasta A3</li><li>Entrega en 5 minutos</li></ul>
+      </article>
+      <article class="card svc reveal">
+        <div class="svc-icon">📺</div>
+        <h3>Streaming Studio</h3>
+        <p>Cabina insonorizada con croma, luces LED, Elgato y micrófono de condensador.</p>
+        <ul><li>OBS configurado</li><li>Cámara 4K</li><li>Asesoría de setup</li></ul>
+      </article>
+      <article class="card svc reveal">
+        <div class="svc-icon">☕</div>
+        <h3>Cafetería</h3>
+        <p>Café de especialidad, snacks y energéticos servidos directo en tu estación.</p>
+        <ul><li>Pedido desde el PC</li><li>Combos gamer</li><li>Opciones veganas</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ======= TARIFAS ======= -->
+<section class="section alt" id="tarifas">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Precios claros</span>
+      <h2>Tarifas sin <span class="grad">letra chica</span></h2>
+      <p>Paga por hora o ahorra hasta un 40 % con nuestros pases y membresías.</p>
+    </div>
+
+    <div class="toggle reveal" role="tablist" aria-label="Tipo de tarifa">
+      <button class="toggle-btn active" data-plan="hora" role="tab" aria-selected="true">Por hora</button>
+      <button class="toggle-btn" data-plan="pase" role="tab" aria-selected="false">Pases</button>
+      <span class="toggle-pill" id="togglePill"></span>
+    </div>
+
+    <div class="grid pricing" id="pricingGrid"><!-- JS --></div>
+
+    <p class="fineprint reveal">* Estudiantes con carné: 20 % de descuento de lunes a jueves antes de las 18:00 h.</p>
+  </div>
+</section>
+
+<!-- ======= ESTACIONES / MAPA ======= -->
+<section class="section" id="estaciones">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Disponibilidad en vivo</span>
+      <h2>Elige tu <span class="grad">estación</span></h2>
+      <p>Toca una estación libre para seleccionarla; se añadirá automáticamente a tu reserva.</p>
+    </div>
+
+    <div class="map-wrap reveal">
+      <div class="map-legend">
+        <span><i class="lg free"></i> Libre</span>
+        <span><i class="lg busy"></i> Ocupada</span>
+        <span><i class="lg sel"></i> Seleccionada</span>
+        <span><i class="lg vip"></i> VIP / Streaming</span>
+      </div>
+      <div class="floor">
+        <div class="floor-label">ZONA A · GAMING</div>
+        <div class="seats" id="seatsA"></div>
+        <div class="floor-label">ZONA B · VIP & STREAMING</div>
+        <div class="seats vip-row" id="seatsB"></div>
+        <div class="floor-label">ZONA C · COWORKING</div>
+        <div class="seats" id="seatsC"></div>
+      </div>
+      <div class="map-foot">
+        <div class="selected-box">
+          <span class="muted">Seleccionada:</span>
+          <strong id="selectedSeat">Ninguna</strong>
+        </div>
+        <a href="#reserva" class="btn btn-primary">Continuar con la reserva</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= TORNEOS ======= -->
+<section class="section alt" id="torneos">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Comunidad</span>
+      <h2>Torneos y <span class="grad">eventos</span></h2>
+      <p>Inscripción gratuita para miembros. Premios en efectivo, periféricos y horas de juego.</p>
+    </div>
+
+    <div class="next-event reveal">
+      <div class="ne-copy">
+        <span class="tag hot">🔥 Próximo evento</span>
+        <h3>NEXUS Valorant Cup · 5v5</h3>
+        <p>16 equipos · Doble eliminación · Premio de <strong>$1.500</strong> + 100 h de juego.</p>
+      </div>
+      <div class="countdown" id="countdown" aria-label="Cuenta regresiva">
+        <div><b id="cdD">00</b><span>días</span></div>
+        <div><b id="cdH">00</b><span>hrs</span></div>
+        <div><b id="cdM">00</b><span>min</span></div>
+        <div><b id="cdS">00</b><span>seg</span></div>
+      </div>
+      <a href="#reserva" class="btn btn-primary">Inscribir equipo</a>
+    </div>
+
+    <div class="grid events">
+      <article class="card event reveal">
+        <div class="ev-top"><span class="tag">Viernes · 20:00</span><span class="ev-slots">8/16 cupos</span></div>
+        <h3>CS2 — Retake Night</h3>
+        <p>Formato 5v5 rápido, mapas rotativos. Entrada: 1 bebida.</p>
+        <div class="ev-bar"><i style="--w:50%"></i></div>
+      </article>
+      <article class="card event reveal">
+        <div class="ev-top"><span class="tag">Sábado · 17:00</span><span class="ev-slots">12/16 cupos</span></div>
+        <h3>FIFA 26 — Copa Rápida</h3>
+        <p>Mano a mano en consola, eliminación directa. Premio: 20 h de juego.</p>
+        <div class="ev-bar"><i style="--w:75%"></i></div>
+      </article>
+      <article class="card event reveal">
+        <div class="ev-top"><span class="tag">Domingo · 15:00</span><span class="ev-slots">4/12 cupos</span></div>
+        <h3>League of Legends — ARAM Chaos</h3>
+        <p>Modo libre por equipos aleatorios. Ideal para principiantes.</p>
+        <div class="ev-bar"><i style="--w:33%"></i></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ======= CAFETERÍA ======= -->
+<section class="section" id="cafeteria">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Combustible</span>
+      <h2>Carta de la <span class="grad">cafetería</span></h2>
+      <p>Pide desde tu estación con un clic. Lo llevamos a tu asiento en menos de 8 minutos.</p>
+    </div>
+
+    <div class="menu-tabs reveal">
+      <button class="chip active" data-cat="todo">Todo</button>
+      <button class="chip" data-cat="cafe">Café</button>
+      <button class="chip" data-cat="snack">Snacks</button>
+      <button class="chip" data-cat="combo">Combos</button>
+      <button class="chip" data-cat="bebida">Bebidas</button>
+    </div>
+
+    <div class="grid menu" id="menuGrid"><!-- JS --></div>
+  </div>
+</section>
+
+<!-- ======= RESERVA ======= -->
+<section class="section alt" id="reserva">
+  <div class="container reserve-grid">
+    <div class="reserve-copy reveal">
+      <span class="eyebrow">Reserva en 30 segundos</span>
+      <h2>Asegura tu <span class="grad">lugar</span></h2>
+      <p>Sin pagos por adelantado. Te guardamos la estación 15 minutos desde la hora elegida.</p>
+      <ul class="ticks">
+        <li>Cancelación gratuita</li>
+        <li>Confirmación inmediata</li>
+        <li>Acumula puntos NEXUS en cada visita</li>
+      </ul>
+      <div class="support">
+        <div class="avatar">🎧</div>
+        <div>
+          <strong>¿Dudas? Escríbenos</strong>
+          <span class="muted">WhatsApp +52 55 1234 5678 · respuesta en 2 min</span>
+        </div>
+      </div>
+    </div>
+
+    <form class="card form reveal" id="bookingForm" novalidate>
+      <h3>Nueva reserva</h3>
+
+      <div class="field">
+        <label for="fName">Nombre completo</label>
+        <input type="text" id="fName" name="nombre" placeholder="Alex Ramírez" required>
+        <small class="err"></small>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="fDate">Fecha</label>
+          <input type="date" id="fDate" name="fecha" required>
+          <small class="err"></small>
+        </div>
+        <div class="field">
+          <label for="fTime">Hora de inicio</label>
+          <input type="time" id="fTime" name="hora" value="18:00" required>
+          <small class="err"></small>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="fZone">Zona</label>
+          <select id="fZone" name="zona">
+            <option value="gaming" data-rate="3.5">Gaming — $3.50/h</option>
+            <option value="vip" data-rate="5">VIP / Streaming — $5.00/h</option>
+            <option value="cowork" data-rate="2.5">Coworking — $2.50/h</option>
+            <option value="vr" data-rate="8">Sala VR — $8.00/h</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="fSeat">Estación</label>
+          <input type="text" id="fSeat" name="estacion" placeholder="Elige en el mapa" readonly>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="fHours">Duración: <b id="hoursLabel">2 horas</b></label>
+        <input type="range" id="fHours" name="horas" min="1" max="8" step="1" value="2">
+        <div class="range-ticks"><span>1h</span><span>4h</span><span>8h</span></div>
+      </div>
+
+      <div class="field">
+        <label>Extras</label>
+        <div class="checks">
+          <label class="check"><input type="checkbox" value="6" data-label="Combo gamer"> <span>Combo gamer <em>+$6</em></span></label>
+          <label class="check"><input type="checkbox" value="3" data-label="Headset premium"> <span>Headset premium <em>+$3</em></span></label>
+          <label class="check"><input type="checkbox" value="4" data-label="Casillero"> <span>Casillero <em>+$4</em></span></label>
+        </div>
+      </div>
+
+      <div class="total">
+        <div>
+          <span class="muted">Total estimado</span>
+          <b id="totalPrice">$7.00</b>
+        </div>
+        <span class="muted small" id="totalBreak">2 h × $3.50</span>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg full">Confirmar reserva</button>
+      <p class="fineprint center">Al reservar aceptas nuestras normas de convivencia.</p>
+    </form>
+  </div>
+</section>
+
+<!-- ======= FAQ + CONTACTO ======= -->
+<section class="section" id="contacto">
+  <div class="container contact-grid">
+    <div class="reveal">
+      <span class="eyebrow">Preguntas frecuentes</span>
+      <h2>Todo lo que <span class="grad">necesitas saber</span></h2>
+      <div class="faq" id="faq">
+        <details><summary>¿Necesito llevar mi cuenta de juego?</summary><p>No es obligatorio. Tenemos cuentas de invitado en todos los equipos y tu sesión se borra automáticamente al cerrar. Si prefieres la tuya, el inicio de sesión es seguro y cifrado.</p></details>
+        <details><summary>¿Puedo llevar mi propio teclado o mouse?</summary><p>Claro. Todas las estaciones tienen puertos USB accesibles al frente y soporte para periféricos personales.</p></details>
+        <details><summary>¿Hay edad mínima para entrar?</summary><p>Menores de 14 años deben venir acompañados por un adulto. De 14 a 17 años pueden permanecer hasta las 22:00 h.</p></details>
+        <details><summary>¿Qué pasa si llego tarde a mi reserva?</summary><p>Guardamos tu estación 15 minutos. Pasado ese tiempo pasa a estar disponible, pero te reubicamos en la primera libre.</p></details>
+        <details><summary>¿Aceptan pagos con tarjeta?</summary><p>Sí: efectivo, tarjeta, transferencia y billeteras digitales. También puedes cargar saldo a tu cuenta NEXUS.</p></details>
+      </div>
+    </div>
+
+    <div class="card info reveal">
+      <h3>Visítanos</h3>
+      <ul class="info-list">
+        <li><i>📍</i><div><strong>Av. Digital 1024, Local 7</strong><span class="muted">Centro, a 200 m del metro Insurgentes</span></div></li>
+        <li><i>🕒</i><div><strong>Abierto 24 / 7</strong><span class="muted">Los 365 días del año</span></div></li>
+        <li><i>📞</i><div><strong>+52 55 1234 5678</strong><span class="muted">WhatsApp y llamadas</span></div></li>
+        <li><i>✉️</i><div><strong>hola@nexuscafe.gg</strong><span class="muted">Respondemos en menos de 24 h</span></div></li>
+      </ul>
+      <div class="map-mock" aria-label="Mapa de ubicación">
+        <div class="mm-grid"></div>
+        <div class="mm-road r1"></div>
+        <div class="mm-road r2"></div>
+        <div class="mm-pin">📍<span>NEXUS</span></div>
+      </div>
+      <div class="socials">
+        <a href="#" aria-label="Discord">Discord</a>
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <a href="#" aria-label="Twitch">Twitch</a>
+        <a href="#" aria-label="TikTok">TikTok</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= FOOTER ======= -->
+<footer class="footer">
+  <div class="container footer-inner">
+    <div>
+      <a href="#inicio" class="logo">
+        <span class="logo-mark">N</span>
+        <span class="logo-text">NEXUS<em>cybercafé</em></span>
+      </a>
+      <p class="muted">El punto de encuentro de gamers, creadores y trasnochadores desde 2019.</p>
+    </div>
+    <div class="fcol"><h4>Explorar</h4><a href="#servicios">Servicios</a><a href="#tarifas">Tarifas</a><a href="#estaciones">Estaciones</a><a href="#torneos">Torneos</a></div>
+    <div class="fcol"><h4>Legal</h4><a href="#">Normas del local</a><a href="#">Privacidad</a><a href="#">Términos</a><a href="#">Trabaja con nosotros</a></div>
+    <div class="fcol">
+      <h4>Newsletter</h4>
+      <p class="muted small">Torneos y promos, una vez al mes.</p>
+      <form class="news" id="newsForm">
+        <input type="email" placeholder="tu@correo.com" aria-label="Correo electrónico" required>
+        <button class="btn btn-primary btn-sm" type="submit">Enviar</button>
+      </form>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 NEXUS Cybercafé. Todos los derechos reservados.</span>
+    <span>Hecho con ⚡ y mucho café.</span>
+  </div>
+</footer>
+
+<!-- ======= TOAST ======= -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <div class="toast-icon">✓</div>
+  <div class="toast-body"><strong id="toastTitle">Listo</strong><span id="toastMsg"></span></div>
+</div>
+
+<button class="to-top" id="toTop" aria-label="Volver arriba">↑</button>
+
+<script src="script.js"></script>
+</body>
+</html>
