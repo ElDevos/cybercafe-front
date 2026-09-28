@@ -1,6 +1,6 @@
 /* ============================================================
    NEXUS Cybercafé — interacciones
-   Todo es estático: no hay backend, los datos viven aquí.
+   Los datos (tarifas, menú, estaciones) vienen de la API de Node.js.
    ============================================================ */
 (() => {
 'use strict';
@@ -8,6 +8,17 @@
 const $  = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 const money = n => '$' + n.toFixed(2);
+
+async function api(path, body) {
+  const res = await fetch(path, body === undefined ? {} : {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw Object.assign(new Error('API ' + res.status), { status: res.status, data });
+  return data;
+}
 
 /* ------------------------------------------------------------
    1. Navegación: sticky, menú móvil y enlace activo
@@ -91,31 +102,14 @@ $$('.stat b').forEach(el => {
 const liveCount = $('#liveCount');
 setInterval(() => {
   const now = Number(liveCount.textContent);
-  const next = Math.min(26, Math.max(9, now + (Math.random() < 0.5 ? -1 : 1)));
+  const next = Math.max(0, now + (Math.random() < 0.5 ? -1 : 1));
   liveCount.textContent = next;
 }, 4500);
 
 /* ------------------------------------------------------------
    4. Tarifas
    ------------------------------------------------------------ */
-const PLANS = {
-  hora: [
-    { name: 'Coworking',   desc: 'Cabina silenciosa con doble monitor', amount: '2.50', unit: '/hora',
-      feats: ['Doble monitor Full HD', 'Silla ergonómica', 'Café americano incluido', 'Enchufes y luz individual', 'Impresión B/N (5 hojas)'] },
-    { name: 'Gaming',      desc: 'La estación más pedida del local', amount: '3.50', unit: '/hora', featured: true, tag: 'Popular',
-      feats: ['RTX 4080 · 240 Hz', 'Periféricos Razer/HyperX', 'Bebida ilimitada', 'Juegos precargados', 'Guardado en la nube'] },
-    { name: 'VIP / Stream',desc: 'Cabina privada con equipo de streaming', amount: '5.00', unit: '/hora',
-      feats: ['Cabina insonorizada', 'Cámara 4K + croma', 'Luces LED y micrófono', 'OBS configurado', 'Snack de cortesía'] }
-  ],
-  pase: [
-    { name: 'Pase Día',    desc: '12 horas continuas, cualquier zona', amount: '24.00', unit: '/día',
-      feats: ['12 h de juego seguidas', 'Cambio de zona libre', '2 bebidas incluidas', 'Casillero del día', 'Sin recargo nocturno'] },
-    { name: 'Membresía',   desc: '40 horas al mes + beneficios', amount: '59.00', unit: '/mes', featured: true, tag: 'Mejor valor',
-      feats: ['40 h mensuales acumulables', 'Reserva prioritaria', 'Inscripción gratis a torneos', '15 % en cafetería', 'Casillero permanente'] },
-    { name: 'Pase Noche',  desc: 'De 22:00 a 07:00, ideal para maratones', amount: '15.00', unit: '/noche',
-      feats: ['9 h de barra libre de PC', 'Café ilimitado', 'Manta y almohada', 'Desayuno a las 6:00', 'Zona silenciosa'] }
-  ]
-};
+let PLANS = { hora: [], pase: [] };
 
 const pricingGrid = $('#pricingGrid');
 const renderPlans = key => {
@@ -150,41 +144,46 @@ $$('.toggle-btn').forEach(btn => {
   });
 });
 
-renderPlans('hora');
 movePill($('.toggle-btn.active'));
+api('/api/plans')
+  .then(data => { PLANS = data; renderPlans($('.toggle-btn.active').dataset.plan); })
+  .catch(() => toastError('Sin conexión', 'No se pudieron cargar las tarifas.'));
 window.addEventListener('resize', () => movePill($('.toggle-btn.active')));
 
 /* ------------------------------------------------------------
    5. Mapa de estaciones
    ------------------------------------------------------------ */
-const ZONES = [
-  { el: '#seatsA', prefix: 'A', count: 24, zone: 'gaming', vip: false },
-  { el: '#seatsB', prefix: 'V', count: 8,  zone: 'vip',    vip: true  },
-  { el: '#seatsC', prefix: 'C', count: 12, zone: 'cowork', vip: false }
-];
+const SEAT_HOSTS = { A: '#seatsA', V: '#seatsB', C: '#seatsC' };
 
 const selectedSeatLabel = $('#selectedSeat');
 const seatInput         = $('#fSeat');
 const zoneSelect        = $('#fZone');
 let selectedSeat = null;
 
-ZONES.forEach(z => {
-  const host = $(z.el);
-  host.innerHTML = '';
-  for (let i = 1; i <= z.count; i++) {
-    const id   = `${z.prefix}${String(i).padStart(2, '0')}`;
-    const busy = Math.random() < (z.vip ? 0.38 : 0.28);
+function renderSeats(seats) {
+  Object.values(SEAT_HOSTS).forEach(sel => { $(sel).innerHTML = ''; });
+  selectedSeat = null;
+  selectedSeatLabel.textContent = 'Ninguna';
+  seatInput.value = '';
+  seats.forEach(({ id, zone, busy }) => {
+    const vip = zone === 'vip';
     const b = document.createElement('button');
     b.type = 'button';
-    b.className = `seat${z.vip ? ' vip' : ''}${busy ? ' busy' : ''}`;
+    b.className = `seat${vip ? ' vip' : ''}${busy ? ' busy' : ''}`;
     b.textContent = id;
-    b.dataset.zone = z.zone;
+    b.dataset.zone = zone;
     b.disabled = busy;
     b.setAttribute('aria-label', `Estación ${id} — ${busy ? 'ocupada' : 'libre'}`);
-    if (!busy) b.addEventListener('click', () => selectSeat(b, id, z.zone));
-    host.appendChild(b);
-  }
+    if (!busy) b.addEventListener('click', () => selectSeat(b, id, zone));
+    $(SEAT_HOSTS[id[0]]).appendChild(b);
+  });
+}
+
+const loadSeats = () => api('/api/seats').then(({ seats, free }) => {
+  renderSeats(seats);
+  liveCount.textContent = free;
 });
+loadSeats().catch(() => toastError('Sin conexión', 'No se pudo cargar el mapa de estaciones.'));
 
 function selectSeat(btn, id, zone) {
   if (selectedSeat === btn) {                      // volver a tocar = deseleccionar
@@ -234,24 +233,7 @@ setInterval(tickCountdown, 1000);
 /* ------------------------------------------------------------
    7. Cafetería
    ------------------------------------------------------------ */
-const MENU = [
-  { n: 'Espresso doble',   c: 'cafe',   e: '☕', p: 2.20, d: 'Grano de especialidad tostado cada semana.' },
-  { n: 'Latte caramelo',   c: 'cafe',   e: '🥛', p: 3.40, d: 'Leche vaporizada, caramelo salado y canela.' },
-  { n: 'Cold brew 16 oz',  c: 'cafe',   e: '🧊', p: 3.80, d: 'Extracción en frío de 18 horas. Sin azúcar.' },
-  { n: 'Matcha latte',     c: 'cafe',   e: '🍵', p: 3.90, d: 'Matcha ceremonial con leche de avena.' },
-  { n: 'Nachos con queso', c: 'snack',  e: '🧀', p: 4.50, d: 'Porción grande para compartir entre dos.' },
-  { n: 'Alitas BBQ (6)',   c: 'snack',  e: '🍗', p: 6.90, d: 'Con papas y salsa ranch de la casa.' },
-  { n: 'Papas gamer',      c: 'snack',  e: '🍟', p: 3.60, d: 'Crujientes, con especias y sin grasa en el teclado.' },
-  { n: 'Brownie caliente', c: 'snack',  e: '🍫', p: 3.20, d: 'Con helado de vainilla encima.' },
-  { n: 'Combo Rusher',     c: 'combo',  e: '🔥', p: 8.90, d: 'Hamburguesa + papas + energética grande.' },
-  { n: 'Combo Maratón',    c: 'combo',  e: '🎮', p: 12.50,d: '2 h de juego + pizza personal + refresco.' },
-  { n: 'Combo Dúo',        c: 'combo',  e: '👥', p: 15.90,d: 'Dos estaciones 2 h + nachos + 2 bebidas.' },
-  { n: 'Combo Desvelo',    c: 'combo',  e: '🌙', p: 10.00,d: 'Café ilimitado de 22:00 a 6:00 + sándwich.' },
-  { n: 'Energética 500ml', c: 'bebida', e: '⚡', p: 3.00, d: 'Fría, la clásica de todas las partidas.' },
-  { n: 'Limonada de menta',c: 'bebida', e: '🍋', p: 2.80, d: 'Natural, sin azúcar añadida.' },
-  { n: 'Agua mineral',     c: 'bebida', e: '💧', p: 1.50, d: 'Porque hidratarse también sube el rank.' },
-  { n: 'Smoothie de frutas',c:'bebida', e: '🥤', p: 4.20, d: 'Fresa, plátano y mango. Sin lácteos.' }
-];
+let MENU = [];
 
 const menuGrid = $('#menuGrid');
 const renderMenu = cat => {
@@ -277,7 +259,9 @@ $$('.menu-tabs .chip').forEach(chip => {
     renderMenu(chip.dataset.cat);
   });
 });
-renderMenu('todo');
+api('/api/menu')
+  .then(data => { MENU = data; renderMenu($('.menu-tabs .chip.active')?.dataset.cat || 'todo'); })
+  .catch(() => toastError('Sin conexión', 'No se pudo cargar el menú.'));
 
 let orderCount = 0;
 menuGrid.addEventListener('click', e => {
@@ -305,7 +289,7 @@ dateInput.value = today;
 function updateTotal() {
   const hours = Number(hoursInput.value);
   const rate  = Number(zoneSelect.selectedOptions[0].dataset.rate);
-  const extras = $$('.checks input:checked').reduce((s, i) => s + Number(i.value), 0);
+  const extras = $$('.checks input:checked').reduce((s, i) => s + Number(i.dataset.price), 0);
   const total = hours * rate + extras;
 
   hoursLabel.textContent = `${hours} hora${hours > 1 ? 's' : ''}`;
@@ -323,7 +307,7 @@ function setError(field, msg) {
   return !msg;
 }
 
-form.addEventListener('submit', e => {
+form.addEventListener('submit', async e => {
   e.preventDefault();
   const name = $('#fName');
   const time = $('#fTime');
@@ -338,12 +322,34 @@ form.addEventListener('submit', e => {
     return;
   }
 
-  const seat  = seatInput.value || 'la primera libre';
-  const zone  = zoneSelect.selectedOptions[0].textContent.split('—')[0].trim();
-  const hours = hoursInput.value;
+  const submitBtn = $('button[type="submit"]', form);
+  submitBtn.disabled = true;
+  let r;
+  try {
+    r = await api('/api/reservations', {
+      nombre:   name.value.trim(),
+      fecha:    dateInput.value,
+      hora:     time.value,
+      zona:     zoneSelect.value,
+      estacion: seatInput.value || null,
+      horas:    Number(hoursInput.value),
+      extras:   $$('.checks input:checked').map(i => i.value)
+    });
+  } catch (err) {
+    const errors = err.data?.errors;
+    if (errors?.nombre) setError(name.closest('.field'), errors.nombre);
+    if (errors?.fecha)  setError(dateInput.closest('.field'), errors.fecha);
+    if (errors?.hora)   setError(time.closest('.field'), errors.hora);
+    toastError('No se pudo reservar',
+      errors ? Object.values(errors).join(' ') : 'El servidor no responde. Inténtalo de nuevo.');
+    if (err.status === 409) loadSeats().catch(() => {});
+    return;
+  } finally {
+    submitBtn.disabled = false;
+  }
 
   toast('¡Reserva confirmada!',
-        `${name.value.trim()} · ${zone} ${seat} · ${dateInput.value} a las ${time.value} por ${hours} h · ${totalPrice.textContent}`);
+        `#${r.id} · ${r.nombre} · ${r.zonaLabel} ${r.estacion || 'la primera libre'} · ${r.fecha} a las ${r.hora} por ${r.horas} h · ${money(r.total)}`);
 
   form.reset();
   dateInput.value = today;
@@ -359,12 +365,18 @@ form.addEventListener('submit', e => {
 });
 
 /* Newsletter */
-$('#newsForm').addEventListener('submit', e => {
+$('#newsForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const input = e.target.querySelector('input');
+  const newsForm = e.target;
+  const input = newsForm.querySelector('input');
   if (!input.checkValidity()) { toastError('Correo inválido', 'Revisa la dirección e inténtalo otra vez.'); return; }
-  toast('¡Suscripción lista!', `Te escribiremos a ${input.value} una vez al mes.`);
-  e.target.reset();
+  try {
+    const { email } = await api('/api/newsletter', { email: input.value });
+    toast('¡Suscripción lista!', `Te escribiremos a ${email} una vez al mes.`);
+    newsForm.reset();
+  } catch (err) {
+    toastError('No se pudo suscribir', err.data?.errors?.email || 'El servidor no responde. Inténtalo de nuevo.');
+  }
 });
 
 /* ------------------------------------------------------------
